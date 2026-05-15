@@ -5,7 +5,21 @@
       "PowerShell(npm install @prisma/client next-auth@4 bcryptjs zod react-hook-form @hookform/resolvers lucide-react)",
       "Bash(until grep *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git -C C:/skillshub-v2 status)",
+      "Bash(git -C C:/skillshub-v2 branch --show-current)",
+      "Bash(git -C C:/skillshub-v2 log --oneline --all -10)",
+      "Bash(git -C C:/skillshub-v2 log master..origin/main --oneline)",
+      "Bash(git -C C:/skillshub-v2 log origin/main..master --oneline)",
+      "Bash(git -C C:/skillshub-v2 log --oneline -3 main)",
+      "Bash(git -C C:/skillshub-v2 log -1 --format=\"%H%n%s\" main)",
+      "Bash(git -C C:/skillshub-v2 config user.email \"prafullarajput@rezolve.com\")",
+      "Bash(git -C C:/skillshub-v2 config user.name \"Prafulla Rajput\")",
+      "Bash(git -C C:/skillshub-v2 branch -d master)",
+      "Bash(git -C C:/skillshub-v2 config --local --get user.email)",
+      "Bash(git -C C:/skillshub-v2 config --local --get user.name)",
+      "Bash(git -C C:/skillshub-v2 branch -a)",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri http://localhost:3001 -UseBasicParsing -TimeoutSec 30; \"Status: $\\($r.StatusCode\\)\" } catch { \"Error: $\\($_.Exception.Message\\)\" })"
     ]
   }
 }

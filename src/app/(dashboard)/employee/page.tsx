@@ -83,7 +83,7 @@ export default async function EmployeeDashboard() {
               <ResumeUploader variant="compact" />
             </div>
             <ProfileDisplay
-              name={session.user.name}
+              name={profile.name || session.user.name}
               email={session.user.email}
               profile={{
                 summary: profile.summary,

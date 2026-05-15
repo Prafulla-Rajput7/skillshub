@@ -53,7 +53,7 @@ export default async function ReviewProfilePage({
         </Link>
 
         <ProfileDisplay
-          name={profile.user.name}
+          name={profile.name || profile.user.name}
           email={profile.user.email}
           profile={{
             summary: profile.summary,

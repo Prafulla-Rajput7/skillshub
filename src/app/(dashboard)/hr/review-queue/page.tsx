@@ -64,7 +64,7 @@ export default async function ReviewQueuePage() {
                 <Card className="hover:border-slate-400 transition-colors cursor-pointer">
                   <CardContent className="p-5 flex items-center justify-between">
                     <div className="space-y-1">
-                      <h3 className="font-semibold">{item.profile.user.name}</h3>
+                      <h3 className="font-semibold">{item.profile.name || item.profile.user.name}</h3>
                       <p className="text-sm text-slate-600">{item.profile.user.email}</p>
                       <div className="flex items-center gap-2 mt-2">
                         <Badge variant="secondary">{item.profile._count.skills} skills</Badge>

@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { extractTextFromPDF } from "@/lib/pdf";
-import { extractProfileFromResume } from "@/lib/gemini";
+import { extractProfileFromResume } from "@/lib/llm";
 import { Proficiency } from "@prisma/client";
 
 export const runtime = "nodejs";
@@ -58,6 +58,7 @@ export async function POST(req: Request) {
     await prisma.profile.update({
       where: { id: profile.id },
       data: {
+        name: extracted.name,
         summary: extracted.summary,
         location: extracted.location || null,
         availability: "Available",

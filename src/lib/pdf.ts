@@ -1,8 +1,7 @@
-// Import the inner module directly to bypass pdf-parse/index.js,
-// which tries to read a bundled test PDF on require and throws ENOENT.
-import pdfParse from "pdf-parse/lib/pdf-parse.js";
+import { extractText, getDocumentProxy } from "unpdf";
 
 export async function extractTextFromPDF(buffer: Buffer): Promise<string> {
-  const data = await pdfParse(buffer);
-  return data.text.trim();
+  const pdf = await getDocumentProxy(new Uint8Array(buffer));
+  const { text } = await extractText(pdf, { mergePages: true });
+  return (text || "").trim();
 }
