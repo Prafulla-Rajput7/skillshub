@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  HR
+  EMPLOYEE
+}
+
+enum Proficiency {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(EMPLOYEE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile?
+}
+
+model Profile {
+  id              String       @id @default(cuid())
+  userId          String       @unique
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  summary         String?      @db.Text
+  location        String?
+  availability    String?
+  yearsExperience Int?
+  resumeText      String?      @db.Text
+  resumeFileName  String?
+  skills          Skill[]
+  projects        Project[]
+  reviewQueue     ReviewQueue?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Skill {
+  id              String      @id @default(cuid())
+  profileId       String
+  profile         Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name            String
+  proficiency     Proficiency @default(INTERMEDIATE)
+  yearsExperience Int?
+  isInferred      Boolean     @default(false)
+  inferredFrom    String?
+  createdAt       DateTime    @default(now())
+
+  @@index([profileId])
+  @@index([name])
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  profileId    String
+  profile      Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  title        String
+  description  String   @db.Text
+  technologies String[]
+  createdAt    DateTime @default(now())
+
+  @@index([profileId])
+}
+
+model ReviewQueue {
+  id          String       @id @default(cuid())
+  profileId   String       @unique
+  profile     Profile      @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  status      ReviewStatus @default(PENDING)
+  submittedAt DateTime     @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?
+  notes       String?      @db.Text
+
+  @@index([status])
+}

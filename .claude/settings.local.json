@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir)",
+      "PowerShell(npm install @prisma/client next-auth@4 bcryptjs zod react-hook-form @hookform/resolvers lucide-react)",
+      "Bash(until grep *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
