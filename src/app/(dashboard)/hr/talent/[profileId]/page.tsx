@@ -1,17 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { ProfileDisplay } from "@/components/profile-display";
-import { ReviewActions } from "@/components/review-actions";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function ReviewProfilePage({
-  params
-}: {
-  params: Promise<{ profileId: string }>;
-}) {
+export default async function TalentProfilePage({ params }: { params: Promise<{ profileId: string }> }) {
   const { profileId } = await params;
 
   const profile = await prisma.profile.findUnique({
@@ -24,16 +19,13 @@ export default async function ReviewProfilePage({
     }
   });
 
-  if (!profile) notFound();
+  if (!profile || profile.reviewQueue?.status !== "APPROVED") notFound();
 
   return (
     <>
-      <div className="max-w-5xl mx-auto px-6 py-12 space-y-6">
-        <Link
-          href="/hr/review-queue"
-          className="inline-flex items-center text-sm text-slate-600 hover:text-slate-900"
-        >
-          <ArrowLeft className="w-4 h-4 mr-1" /> Back to queue
+      <div className="max-w-5xl mx-auto px-6 py-10 space-y-6">
+        <Link href="/hr/talent" className="inline-flex items-center text-sm text-slate-600 hover:text-slate-900">
+          <ArrowLeft className="w-4 h-4 mr-1" /> Back to directory
         </Link>
 
         <ProfileDisplay
@@ -47,8 +39,6 @@ export default async function ReviewProfilePage({
             projects: profile.projects
           }}
         />
-
-        {profile.reviewQueue?.status === "PENDING" && <ReviewActions profileId={profile.id} />}
       </div>
     </>
   );

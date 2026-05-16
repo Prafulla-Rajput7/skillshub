@@ -7,7 +7,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuthSplitLayout } from "@/components/auth-split-layout";
+import { Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Role = "HR" | "EMPLOYEE";
 
@@ -24,13 +26,13 @@ export default function SignupPage() {
       name: form.get("name"),
       email: form.get("email"),
       password: form.get("password"),
-      role,
+      role
     };
 
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     if (!res.ok) {
@@ -43,7 +45,7 @@ export default function SignupPage() {
     await signIn("credentials", {
       email: payload.email,
       password: payload.password,
-      redirect: false,
+      redirect: false
     });
     toast.success("Account created");
     router.push(role === "HR" ? "/hr" : "/employee");
@@ -51,60 +53,73 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>Join SkillsHub in under a minute</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => setRole("EMPLOYEE")}
-                className={`p-3 rounded-md border text-sm font-medium transition ${
-                  role === "EMPLOYEE"
-                    ? "border-slate-900 bg-slate-900 text-white"
-                    : "border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                I&apos;m an Employee
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole("HR")}
-                className={`p-3 rounded-md border text-sm font-medium transition ${
-                  role === "HR"
-                    ? "border-slate-900 bg-slate-900 text-white"
-                    : "border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                I&apos;m HR
-              </button>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="name">Full name</Label>
-              <Input id="name" name="name" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" minLength={6} required />
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Creating account..." : "Create account"}
-            </Button>
-            <p className="text-sm text-center text-slate-600">
-              Already have an account?{" "}
-              <Link href="/login" className="font-medium underline">Log in</Link>
-            </p>
-          </form>
-        </CardContent>
-      </Card>
-    </main>
+    <AuthSplitLayout>
+      <div className="space-y-1 lg:hidden mb-6">
+        <Link href="/" className="flex items-center gap-2 w-fit">
+          <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#6B1FD1] to-pink-500 flex items-center justify-center shadow-md shadow-[#6B1FD1]/30">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-semibold text-lg">SkillsHub</span>
+        </Link>
+      </div>
+
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Get started</h1>
+        <p className="text-slate-600">It takes under a minute. Promise.</p>
+      </div>
+
+      <form onSubmit={onSubmit} className="mt-8 space-y-4">
+        <div>
+          <Label className="text-xs uppercase tracking-wider text-slate-500 mb-2 block">I&apos;m signing up as</Label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setRole("EMPLOYEE")}
+              className={cn(
+                "p-3 rounded-md border text-sm font-medium transition-all",
+                role === "EMPLOYEE"
+                  ? "border-[#6B1FD1] bg-[#6B1FD1] text-white shadow-md shadow-[#6B1FD1]/30"
+                  : "border-slate-200 hover:border-slate-300 text-slate-700"
+              )}
+            >
+              An Employee
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("HR")}
+              className={cn(
+                "p-3 rounded-md border text-sm font-medium transition-all",
+                role === "HR"
+                  ? "border-[#6B1FD1] bg-[#6B1FD1] text-white shadow-md shadow-[#6B1FD1]/30"
+                  : "border-slate-200 hover:border-slate-300 text-slate-700"
+              )}
+            >
+              In HR
+            </button>
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="name">Full name</Label>
+          <Input id="name" name="name" required />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" name="password" type="password" minLength={6} required />
+        </div>
+        <Button type="submit" className="w-full shadow-md shadow-[#6B1FD1]/30" disabled={loading}>
+          {loading ? "Creating account..." : "Create account"}
+        </Button>
+        <p className="text-sm text-center text-slate-600 pt-2">
+          Already have an account?{" "}
+          <Link href="/login" className="font-medium text-[#6B1FD1] hover:underline">
+            Log in
+          </Link>
+        </p>
+      </form>
+    </AuthSplitLayout>
   );
 }
