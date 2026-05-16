@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Briefcase } from "lucide-react";
+import { AvatarInitials } from "@/components/avatar-initials";
 
 interface Skill {
   id: string;
@@ -40,19 +41,24 @@ export function ProfileDisplay({ name, email, profile }: ProfileDisplayProps) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">{name}</CardTitle>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mt-1">
-            <span>{email}</span>
-            {profile.location && (
-              <span className="flex items-center gap-1">
-                <MapPin className="w-3 h-3" /> {profile.location}
-              </span>
-            )}
-            {profile.yearsExperience !== null && profile.yearsExperience > 0 && (
-              <span className="flex items-center gap-1">
-                <Briefcase className="w-3 h-3" /> {profile.yearsExperience}+ years
-              </span>
-            )}
+          <div className="flex items-center gap-4">
+            <AvatarInitials name={name} size="lg" />
+            <div className="min-w-0">
+              <CardTitle className="text-2xl">{name}</CardTitle>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mt-1">
+                <span>{email}</span>
+                {profile.location && (
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3" /> {profile.location}
+                  </span>
+                )}
+                {profile.yearsExperience !== null && profile.yearsExperience > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Briefcase className="w-3 h-3" /> {profile.yearsExperience}+ years
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         </CardHeader>
         {profile.summary && (

@@ -7,7 +7,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AuthSplitLayout } from "@/components/auth-split-layout";
+import { Sparkles } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function LoginPage() {
     const res = await signIn("credentials", {
       email: form.get("email"),
       password: form.get("password"),
-      redirect: false,
+      redirect: false
     });
     setLoading(false);
     if (res?.error) {
@@ -33,32 +34,40 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>Log in to your SkillsHub account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign in"}
-            </Button>
-            <p className="text-sm text-center text-slate-600">
-              Don&apos;t have an account?{" "}
-              <Link href="/signup" className="font-medium underline">Sign up</Link>
-            </p>
-          </form>
-        </CardContent>
-      </Card>
-    </main>
+    <AuthSplitLayout>
+      <div className="space-y-1 lg:hidden mb-6">
+        <Link href="/" className="flex items-center gap-2 w-fit">
+          <div className="w-8 h-8 rounded-md bg-gradient-to-br from-[#6B1FD1] to-pink-500 flex items-center justify-center shadow-md shadow-[#6B1FD1]/30">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-semibold text-lg">SkillsHub</span>
+        </Link>
+      </div>
+
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
+        <p className="text-slate-600">Pick up where you left off.</p>
+      </div>
+
+      <form onSubmit={onSubmit} className="mt-8 space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" name="password" type="password" required />
+        </div>
+        <Button type="submit" className="w-full shadow-md shadow-[#6B1FD1]/30" disabled={loading}>
+          {loading ? "Signing in..." : "Sign in"}
+        </Button>
+        <p className="text-sm text-center text-slate-600 pt-2">
+          Don&apos;t have an account?{" "}
+          <Link href="/signup" className="font-medium text-[#6B1FD1] hover:underline">
+            Sign up
+          </Link>
+        </p>
+      </form>
+    </AuthSplitLayout>
   );
 }
